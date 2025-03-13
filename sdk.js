@@ -83,4 +83,4 @@ class PubSub {
   }
 }
 
-export default PubSub;
+window.PubSub = PubSub;

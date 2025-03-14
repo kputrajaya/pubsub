@@ -76,8 +76,14 @@ class PubSub {
       if (!ws?.readyState === WebSocket.OPEN) return;
       ws.send(JSON.stringify({ action: 'sub', key }));
     };
+    this.active = false;
+
+    Object.defineProperty(this, 'connected', {
+      get: () => ws?.readyState === WebSocket.OPEN,
+    });
 
     if (subKey) {
+      this.active = true;
       connect();
     }
   }

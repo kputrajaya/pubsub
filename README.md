@@ -25,7 +25,7 @@ The server will run at port 8075.
 To start using the WebSocket SDK, load it in your page:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/kputrajaya/pubsub@latest/sdk.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/kputrajaya/pubsub@refs/heads/main/sdk.js"></script>
 ```
 
 Then, initialize synchronization:

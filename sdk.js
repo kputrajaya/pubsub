@@ -78,10 +78,6 @@ class PubSub {
     };
     this.active = false;
 
-    Object.defineProperty(this, 'connected', {
-      get: () => ws?.readyState === WebSocket.OPEN,
-    });
-
     if (subKey) {
       this.active = true;
       connect();

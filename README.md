@@ -32,14 +32,14 @@ Then, initialize synchronization:
 
 ```js
 const ps = new PubSub({
-  host: 'server.com',
+  host: 'ws://server.tld',
   appKey: 'test',
   getData: () => read(),
   setData: (data) => write(data),
 });
 ```
 
-Now, when you load the page with URL param `k` set (such as `app.com?k=xyz`), the page will:
+Now, when you load the page with URL param `k` set (such as `app.tld?k=xyz`), the page will:
 
 1. Subscribe to _real-time_ data changes
 2. _Periodically_ check for data changes and publish it

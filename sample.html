@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>PubSub Sample</title>
+    <script src="sdk.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  </head>
+  <body>
+    <div
+      x-data="{ name: 'John' }"
+      x-init="new PubSub({
+        host: 'ws://localhost:8075',
+        appKey: 'sample',
+        getData: () => name,
+        setData: (v) => name = v,
+      })"
+    >
+      <div>Name: <input type="text" x-model="name" /></div>
+      <h2>Welcome, <span x-text="name"></span>!</h2>
+    </div>
+  </body>
+</html>

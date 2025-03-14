@@ -4,7 +4,7 @@ const http = require('http');
 const NodeCache = require('node-cache');
 const WebSocket = require('ws');
 
-const PORT = 8075;
+const SERVER_PORT = 8075;
 const DATA_TTL = 24 * 3600;
 
 const app = express();
@@ -79,6 +79,6 @@ wss.on('connection', (ws) => {
 });
 
 // Start server
-server.listen(PORT, () => {
+server.listen(SERVER_PORT, () => {
   console.log('Server is running');
 });

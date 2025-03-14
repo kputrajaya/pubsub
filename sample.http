@@ -1,0 +1,12 @@
+POST http://localhost:8075/cache/sample:xyz
+Content-Type: application/json
+
+{
+    "message": "Lorem ipsum",
+    "score": 100
+}
+
+###
+
+GET http://localhost:8075/cache/sample:xyz
+Content-Type: application/json

@@ -66,7 +66,6 @@ class PubSub {
     this.pub = () => {
       if (!ws?.readyState === WebSocket.OPEN) return;
       const data = getData();
-      console.log(data);
       const currentJson = JSON.stringify(data);
       if (currentJson === lastJson) return;
       console.debug('Publish');

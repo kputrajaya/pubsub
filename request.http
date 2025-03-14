@@ -1,4 +1,4 @@
-POST http://localhost:8075/cache/test:sample-key
+POST http://localhost:8075/cache/test:xyz
 Content-Type: application/json
 
 {
@@ -7,4 +7,5 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8075/cache/test:sample-key
+GET http://localhost:8075/cache/test:xyz
+Content-Type: application/json

@@ -2,34 +2,66 @@
 
 Simple pub-sub server and SDK for easy synchronization between pages or devices.
 
-## How to Use
+## Running the Server
 
-Here is how to do basic initialization:
+To start the HTTP and WebSocket server, run:
+
+```sh
+$ npm install
+$ node server.js
+```
+
+The server will run at port 8075.
+
+### Endpoints
+
+| Path           | Method | Description                |
+| -------------- | ------ | -------------------------- |
+| `/cache/{key}` | GET    | Fetch data for key `{key}` |
+| `/cache/{key}` | POST   | Set data for key `{key}`   |
+
+## Using the SDK
+
+To start using the WebSocket SDK, load it in your page:
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/kputrajaya/pubsub@latest/sdk.js"></script>
+```
+
+Then, initialize synchronization:
 
 ```js
 const ps = new PubSub({
-  host: 'pubsub.domain.com', // PubSub server hostname
-  appKey: 'sample', // Application prefix for the cache keys
-  getData: () => load(), // Function to obtain the current data value
-  setData: (data) => save(data), // Function to handle newly received data
-
-  // Optional arguments
-  subKeyParam: 'k', // URL parameter which contains the subscription key
-  pubFrequency: 1000, // Delay between periodic sending, if change is detected (ms)
-  subFrequency: 10000, // Delay between periodic fetching, as a safeguard (ms)
-  reconnectDelay: 1000, // Delay before retrying broken connection (ms)
+  host: 'server.com',
+  appKey: 'test',
+  getData: () => read(),
+  setData: (data) => write(data),
 });
 ```
 
-This would enable data synchronization if the value of `subKeyParam` is not empty.
+Now, when you load the page with URL param `k` set (such as `app.com?k=xyz`), the page will:
 
-For instance, the page `app.domain.com?k=123` will synchronize data using the key `sample:123`.
+1. Subscribe to _real-time_ data changes
+2. _Periodically_ check for data changes and publish it
 
-To trigger manual or event-based data publishing, simply call:
+To publish data in _real-time_, call this method on relevant events:
 
 ```js
 ps.pub();
 ```
+
+### Options
+
+| Name             | Type     | Required | Default | Description                                                   |
+| ---------------- | -------- | -------- | ------- | ------------------------------------------------------------- |
+| `host`           | string   | Y        | -       | PubSub server hostname                                        |
+| `appKey`         | string   | Y        | -       | Application prefix for the cache keys                         |
+| `getData`        | function | Y        | -       | Function to obtain the current data value                     |
+| `setData`        | function | Y        | -       | Function to handle newly received data                        |
+| `subKeyParam`    | string   | N        | `'k'`   | URL param with the subscription key                           |
+| `pubFrequency`   | integer  | N        | `1000`  | Delay between periodic publishing, if change is detected (ms) |
+| `subFrequency`   | integer  | N        | `10000` | Delay between periodic fetching, as a fallback (ms)           |
+| `reconnectDelay` | integer  | N        | `1000`  | Delay before retrying broken connections (ms)                 |
 
 ## Built With
 

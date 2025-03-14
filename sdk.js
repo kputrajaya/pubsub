@@ -1,11 +1,11 @@
 class PubSub {
   constructor(options = {}) {
     const {
-      host = 'localhost',
-      appKey = 'foo',
+      host,
+      appKey,
+      getData,
+      setData,
       subKeyParam = 'k',
-      getData = () => ({}),
-      setData = console.log,
       pubFrequency = 1000,
       subFrequency = 10000,
       reconnectDelay = 1000,

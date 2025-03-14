@@ -1,16 +1,17 @@
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const express = require('express');
 const http = require('http');
 const NodeCache = require('node-cache');
 const WebSocket = require('ws');
 
+const PORT = 8075;
+const DATA_TTL = 24 * 3600;
+
 const app = express();
 app.use(bodyParser.json());
-app.use(cors({ origin: [/\.kvn\.pt$/] }));
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
-const cache = new NodeCache({ stdTTL: 3 * 24 * 3600 });
+const cache = new NodeCache({ stdTTL: DATA_TTL });
 const keyClients = {};
 
 // Helpers
@@ -78,6 +79,6 @@ wss.on('connection', (ws) => {
 });
 
 // Start server
-server.listen(8075, () => {
+server.listen(PORT, () => {
   console.log('Server is running');
 });

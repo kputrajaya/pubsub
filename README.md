@@ -80,13 +80,12 @@ ps.pub();
 
 ## Try It Out
 
-Clone this repo, run the server, then open the sample [Alpine.js](https://alpinejs.dev/) app (`sample.html`).
+Clone this repo, run the server, then open the sample [Alpine.js](https://alpinejs.dev/) app ([`sample.html`](sample.html)).
 
 Multiple tabs with the same `k` parameter will now sync.
 
 ## Built With
 
-- [Node.js](https://nodejs.org/)
 - [Express](https://expressjs.com/)
 - [ws](https://www.npmjs.com/package/ws)
 - [node-cache](https://www.npmjs.com/package/node-cache)

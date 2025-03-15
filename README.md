@@ -1,6 +1,6 @@
 # PubSub
 
-Simple pub-sub server and SDK for easy synchronization between pages or devices.
+Simple pub-sub server and SDK for easy sync between pages and devices.
 
 ## Running the Server
 

@@ -4,7 +4,7 @@ Simple pub-sub server and SDK for easy synchronization between pages or devices.
 
 ## Running the Server
 
-To start the server, run:
+To start the [Node.js](https://nodejs.org/) server, run:
 
 ```sh
 $ npm install
@@ -86,6 +86,7 @@ Multiple tabs with the same `k` parameter will now sync.
 
 ## Built With
 
+- [Node.js](https://nodejs.org/)
 - [Express](https://expressjs.com/)
-- [node-cache](https://www.npmjs.com/package/node-cache)
 - [ws](https://www.npmjs.com/package/ws)
+- [node-cache](https://www.npmjs.com/package/node-cache)

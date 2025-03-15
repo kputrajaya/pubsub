@@ -68,7 +68,7 @@ ps.pub();
 | `subKeyParam`    | string   | N        | `k`     | URL parameter which contains the subscription key |
 | `pubFrequency`   | integer  | N        | `1000`  | Delay between periodic publishing (ms)            |
 | `subFrequency`   | integer  | N        | `10000` | Delay between periodic fetching, as fallback (ms) |
-| `reconnectDelay` | integer  | N        | `1000`  | Delay before retrying broken connections (ms)     |
+| `reconnectDelay` | integer  | N        | `2000`  | Delay before retrying broken connections (ms)     |
 
 ### Methods and Properties
 

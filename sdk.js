@@ -8,7 +8,7 @@ class PubSub {
       subKeyParam = 'k',
       pubFrequency = 1000,
       subFrequency = 10000,
-      reconnectDelay = 1000,
+      reconnectDelay = 2000,
     } = options;
 
     let ws;

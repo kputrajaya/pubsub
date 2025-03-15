@@ -1,17 +1,19 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const http = require('http');
+const minimist = require('minimist');
 const NodeCache = require('node-cache');
 const WebSocket = require('ws');
 
-const SERVER_PORT = 8075;
-const DATA_TTL = 24 * 3600;
+const argv = minimist(process.argv.slice(2));
+const argPort = argv.p || 8075;
+const argTtl = argv.t || 86400;
 
 const app = express();
 app.use(bodyParser.json());
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
-const cache = new NodeCache({ stdTTL: DATA_TTL });
+const cache = new NodeCache({ stdTTL: argTtl });
 const keyClients = {};
 
 // Helpers
@@ -26,6 +28,9 @@ const clientDelete = (client) => {
       delete keyClients[key];
     }
   }
+};
+const get = (key) => {
+  return cache.get(key);
 };
 const setAndPublish = (key, data, self = null) => {
   cache.set(key, data);
@@ -44,7 +49,7 @@ app.post('/cache/:key', (req, res) => {
   res.json();
 });
 app.get('/cache/:key', (req, res) => {
-  const data = cache.get(req.params.key);
+  const data = get(req.params.key);
   res.json(data || null);
 });
 
@@ -65,7 +70,7 @@ wss.on('connection', (ws) => {
         break;
       case 'sub':
         clientAdd(parsed.key, ws);
-        const data = cache.get(parsed.key);
+        const data = get(parsed.key);
         if (data) {
           ws.send(JSON.stringify(data));
         }
@@ -79,6 +84,6 @@ wss.on('connection', (ws) => {
 });
 
 // Start server
-server.listen(SERVER_PORT, () => {
-  console.log('Server is running');
+server.listen(argPort, () => {
+  console.log(`Server is running on port ${argPort} with TTL ${argTtl}`);
 });

@@ -11,26 +11,43 @@ class PubSub {
       reconnectDelay = 2000,
     } = options;
 
-    let ws, lastJson, pubInt, subInt;
+    // Validate options
+    if (!host) throw new Error('Invalid host!');
+    if (!appKey) throw new Error('Invalid appKey!');
+    if (typeof getData !== 'function') throw new Error('Invalid getData!');
+    if (typeof setData !== 'function') throw new Error('Invalid setData!');
 
+    let ws, lastJson, pubInterval, subInterval, reconnectTimeout;
+
+    // Helpers
     const getParam = (name) => {
       try {
         const params = new URLSearchParams(window.location.search);
         return params.get(name);
       } catch (err) {
-        console.error('Error parsing params:', err);
+        console.error('Error parsing URL params:', err);
         return null;
       }
     };
-    const clearIntervals = () => {
-      clearInterval(pubInt);
-      clearInterval(subInt);
+    const cleanup = () => {
+      if (pubInterval) {
+        clearInterval(pubInterval);
+        pubInterval = null;
+      }
+      if (subInterval) {
+        clearInterval(subInterval);
+        subInterval = null;
+      }
+      if (reconnectTimeout) {
+        clearTimeout(reconnectTimeout);
+        reconnectTimeout = null;
+      }
     };
     const connect = () => {
+      cleanup();
       lastJson = null;
-      clearIntervals();
-      pubInt = setInterval(this.pub, pubFrequency);
-      subInt = setInterval(this.sub, subFrequency);
+      pubInterval = setInterval(this.pub, pubFrequency);
+      subInterval = setInterval(this.sub, subFrequency);
 
       ws = new WebSocket(host);
       ws.onopen = () => {
@@ -52,16 +69,17 @@ class PubSub {
       };
       ws.onclose = (e) => {
         console.log('Disconnected:', e.reason);
-        clearIntervals();
-        setTimeout(connect, reconnectDelay);
+        cleanup();
+        reconnectTimeout = setTimeout(connect, reconnectDelay);
       };
     };
 
     const subKey = getParam(subKeyParam);
     const key = `${appKey}:${subKey}`;
 
+    // Methods and properties
     this.pub = () => {
-      if (!ws?.readyState === WebSocket.OPEN) return;
+      if (ws?.readyState !== WebSocket.OPEN) return;
       const data = getData();
       const currentJson = JSON.stringify(data);
       if (currentJson === lastJson) return;
@@ -70,12 +88,13 @@ class PubSub {
       lastJson = currentJson;
     };
     this.sub = () => {
-      if (!ws?.readyState === WebSocket.OPEN) return;
+      if (ws?.readyState !== WebSocket.OPEN) return;
       ws.send(JSON.stringify({ action: 'sub', key }));
     };
     this.active = !!subKey;
     this.key = subKey;
 
+    // Initialize
     if (this.active) {
       connect();
     }

@@ -1,4 +1,19 @@
 {
+  "name": "pubsub",
+  "version": "1.0.0",
+  "description": "Simple pub-sub server and SDK for easy small-scale sync between pages and devices.",
+  "main": "server.js",
+  "keywords": [
+    "pubsub",
+    "websocket",
+    "real-time",
+    "sync",
+    "publish-subscribe",
+    "express",
+    "node"
+  ],
+  "author": "Kevin Putrajaya",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.20.2",
     "express": "^4.19.2",

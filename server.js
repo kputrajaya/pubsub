@@ -5,10 +5,12 @@ const minimist = require('minimist');
 const NodeCache = require('node-cache');
 const WebSocket = require('ws');
 
+// Parse arguments
 const argv = minimist(process.argv.slice(2));
 const argPort = argv.p || 8075;
 const argTtl = argv.t || 86400;
 
+// Initialize server and cache
 const app = express();
 app.use(bodyParser.json());
 const server = http.createServer(app);
@@ -42,17 +44,6 @@ const setAndPublish = (key, data, self = null) => {
   });
 };
 
-// HTTP handlers
-app.post('/cache/:key', (req, res) => {
-  if (!req.body) return res.status(400).json();
-  setAndPublish(req.params.key, req.body);
-  res.json();
-});
-app.get('/cache/:key', (req, res) => {
-  const data = get(req.params.key);
-  res.json(data || null);
-});
-
 // WebSocket handlers
 wss.on('connection', (ws) => {
   console.log('Client connected');
@@ -61,7 +52,7 @@ wss.on('connection', (ws) => {
     try {
       parsed = JSON.parse(message);
     } catch {}
-    if (!parsed || !parsed.key) return;
+    if (!parsed?.key) return;
 
     switch (parsed.action) {
       case 'pub':

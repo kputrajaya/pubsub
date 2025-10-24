@@ -4,18 +4,49 @@
     <title>PubSub Sample</title>
     <script src="sdk.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 16px;
+        background-color: #f4f4f4;
+      }
+      input {
+        width: 160px;
+        padding: 8px;
+      }
+    </style>
   </head>
   <body
-    x-data="{ name: 'John' }"
-    x-init="new PubSub({
-    host: 'ws://localhost:8075',
-    appKey: 'sample',
-    getData: () => name,
-    setData: (v) => (name = v),
-  })"
+    x-data="{ name: 'Bob', occupation: 'Builder' }"
+    x-init="window.ps = new PubSub({
+      host: 'ws://localhost:8075',
+      appKey: 'sample',
+      getData: () => ({ name, occupation }),
+      setData: (v) => {
+        name = v.name;
+        occupation = v.occupation;
+      },
+    })"
   >
-    <div>Name: <input type="text" x-model="name" /></div>
-    <h2>Welcome, <span x-text="name"></span>!</h2>
-    <p>To sync with key <code>xyz</code>, <a href="?k=xyz">click here</a>.</p>
+    <table>
+      <tr>
+        <td>Name</td>
+        <td>:</td>
+        <td><input type="text" x-model="name" /></td>
+      </tr>
+      <tr>
+        <td>Occupation</td>
+        <td>:</td>
+        <td><input type="text" x-model="occupation" /></td>
+      </tr>
+    </table>
+
+    <h2>Welcome, <span x-text="name"></span> the <span x-text="occupation"></span>!</h2>
+
+    <p x-show="!window.ps.active">&#128308; Syncing is not active. <a href="?k=xyz">Start syncing</a>.</p>
+    <p x-show="window.ps.active">
+      &#128994; Syncing with key "<span x-text="window.ps.key"></span>".
+      <a :href="`?k=${window.ps.key}`" target="_blank">Duplicate tab</a>.
+    </p>
   </body>
 </html>

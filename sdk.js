@@ -11,10 +11,7 @@ class PubSub {
       reconnectDelay = 2000,
     } = options;
 
-    let ws;
-    let lastJson;
-    let pubInt;
-    let subInt;
+    let ws, lastJson, pubInt, subInt;
 
     const getParam = (name) => {
       try {
@@ -76,10 +73,10 @@ class PubSub {
       if (!ws?.readyState === WebSocket.OPEN) return;
       ws.send(JSON.stringify({ action: 'sub', key }));
     };
-    this.active = false;
+    this.active = !!subKey;
+    this.key = subKey;
 
-    if (subKey) {
-      this.active = true;
+    if (this.active) {
       connect();
     }
   }

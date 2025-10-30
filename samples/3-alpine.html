@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <title>Alpine</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="../sdk.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  </head>
+  <body
+    x-data="{
+      state: { name: 'Bob' },
+      init() {
+        const ps = new PubSub({
+          host: 'ws://localhost:8075',
+          appKey: 'sample',
+          getData: () => (this.state),
+          setData: (v) => (this.state = v),
+        });
+      }
+    }"
+  >
+    <div>Name: <input type="text" x-model="state.name" /></div>
+    <h2>Welcome, <span x-text="state.name"></span>!</h2>
+  </body>
+</html>

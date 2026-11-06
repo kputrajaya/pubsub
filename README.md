@@ -68,12 +68,20 @@ ps.pub();
 
 ## Try It Out
 
-Clone this repo, start the server, then open the sample [Alpine](https://alpinejs.dev/) app (`sample.html`).
+Start the server, then open any sample from `samples/`:
+
+- `1-vanilla.html` — vanilla pub/sub
+- `2-vanilla-rt.html` — vanilla with real-time publishing
+- `3-alpine.html` — [Alpine](https://alpinejs.dev/) pub/sub
+- `4-alpine-rt.html` — [Alpine](https://alpinejs.dev/) with real-time publishing
 
 Multiple tabs with the same `k` param will now sync.
+
+Serve the folder over HTTP (e.g. `npx serve`) rather than opening the files directly: a `file://` page sends `Origin: null`, which is rejected when `ALLOWED_HOST` is set.
 
 ## Built With
 
 - [Express](https://expressjs.com/)
 - [ws](https://www.npmjs.com/package/ws)
 - [node-cache](https://www.npmjs.com/package/node-cache)
+- [minimist](https://www.npmjs.com/package/minimist)

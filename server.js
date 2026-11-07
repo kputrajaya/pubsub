@@ -67,15 +67,15 @@ app.use((req, res, next) => {
   return next();
 });
 app.post('/cache/:key', (req, res) => {
+  if (req.body === undefined) return res.status(400).json();
   if (!isValidKey(req.params.key)) return res.status(400).json();
-  if (!req.body) return res.status(400).json();
   setAndPublish(req.params.key, req.body);
   res.json();
 });
 app.get('/cache/:key', (req, res) => {
   if (!isValidKey(req.params.key)) return res.status(400).json();
   const data = get(req.params.key);
-  res.json(data || null);
+  res.json(data === undefined ? null : data);
 });
 
 // WebSocket handlers
@@ -103,13 +103,13 @@ wss.on('connection', (ws) => {
 
     switch (parsed.action) {
       case 'pub':
-        if (!parsed.data) return;
+        if (parsed.data === undefined) return;
         setAndPublish(parsed.key, parsed.data, ws);
         break;
       case 'sub':
         clientAdd(parsed.key, ws);
         const data = get(parsed.key);
-        if (data) {
+        if (data !== undefined) {
           ws.send(JSON.stringify(data));
         }
         break;
